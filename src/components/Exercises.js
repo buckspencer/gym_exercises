@@ -7,18 +7,41 @@ import { exerciseOptions, fetchData } from "../utils/fetchData";
 
 import ExerciseCard from "./ExerciseCard";
 
+const base_url = "https://exercisedb.p.rapidapi.com/exercises";
+
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const exercisesPerPage = 9;
 
   const indexOfLastExercise = currentPage * exercisesPerPage;
   const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage;
+  const currentExercises = exercises.slice(
+    indexOfFirstExercise,
+    indexOfLastExercise
+  );
 
   const paginate = (e, value) => {
     setCurrentPage(value);
 
     window.scrollTo({ top: 1800, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    let url = `/bodyPart/${bodyPart}`;
+
+    const fetchExerciseData = async () => {
+      let exerciseData = [];
+
+      if (bodyPart === "all") {
+        exerciseData = await fetchData(base_url, exerciseOptions);
+      } else {
+        exerciseData = await fetchData(url, exerciseOptions);
+      }
+
+      setExercises(exerciseData);
+    };
+    fetchExerciseData();
+  }, [bodyPart]);
 
   return (
     <Box id="exercises" sx={{ mt: { lg: "110px" } }}>
@@ -31,7 +54,7 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
         flexWrap="wrap"
         justifyContent="center"
       >
-        {exercises.map((exercise, index) => (
+        {currentExercises.map((exercise, index) => (
           <ExerciseCard key={index} exercise={exercise} />
         ))}
       </Stack>
