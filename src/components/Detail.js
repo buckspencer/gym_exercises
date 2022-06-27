@@ -28,7 +28,12 @@ const Detail = ({ exerciseDetail }) => {
           energy.
         </Typography>
         {extraDetail.map((item) => (
-          <Stack key={item.name} direction="row" gap="24px" alignItems="center">
+          <Stack
+            key={item.name + "123"}
+            direction="row"
+            gap="24px"
+            alignItems="center"
+          >
             <Button
               sx={{
                 background: "#FFF2DB",

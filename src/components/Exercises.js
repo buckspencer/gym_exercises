@@ -7,11 +7,9 @@ import { exerciseOptions, fetchData } from "../utils/fetchData";
 
 import ExerciseCard from "./ExerciseCard";
 
-const base_url = "https://exercisedb.p.rapidapi.com/exercises";
-
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const exercisesPerPage = 9;
+  const [exercisesPerPage] = useState(6);
 
   const indexOfLastExercise = currentPage * exercisesPerPage;
   const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage;
@@ -27,20 +25,26 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
   };
 
   useEffect(() => {
-    let url = `/bodyPart/${bodyPart}`;
-
-    const fetchExerciseData = async () => {
-      let exerciseData = [];
+    const fetchExercisesData = async () => {
+      let exercisesData = [];
 
       if (bodyPart === "all") {
-        exerciseData = await fetchData(base_url, exerciseOptions);
+        exercisesData = await fetchData(
+          "https://exercisedb.p.rapidapi.com/exercises",
+          exerciseOptions
+        );
       } else {
-        exerciseData = await fetchData(url, exerciseOptions);
+        exercisesData = await fetchData(
+          `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
+          exerciseOptions
+        );
       }
 
-      setExercises(exerciseData);
+      setExercises(exercisesData);
     };
-    fetchExerciseData();
+
+    fetchExercisesData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bodyPart]);
 
   return (
