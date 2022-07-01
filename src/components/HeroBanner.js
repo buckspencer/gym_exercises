@@ -49,7 +49,7 @@ const HeroBanner = () => {
         src={HeroBannerImage}
         alt="banner"
         className="hero-banner-img"
-        style={{ width: "50%" }}
+        style={{ width: "500px", height: "588px", margin: { right: "145px" } }}
       />
     </Box>
   );
